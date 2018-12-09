@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+APP_ROOT = File.expand_path(File.dirname(__FILE__))
+
+require "#{APP_ROOT}/lib/generate.rb"
+require "optparse"
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: generate [options]"
+
+  opts.on('-v', '--var-file TERRAFORM_VAR_FILE', 'Terraform variable file') { |v| options[:var_File] = v }
+  opts.on('-r', '--region AWS_REGION', 'AWS Region') { |v| options[:region] = v }
+  opts.on('-p', '--terraform-path TERRAFORM_PATH', 'Terraform path') { |v| options[:terraform_path] = v }
+  opts.on('-a', '--auto-approve AUTO_APPROVE', 'Auto approve') { |v| options[:auto_approve] = v }
+end.parse!
+
+tfvars = {
+  'region' => options[:region]
+}
+
+terraform_path = File.expand_path(options[:terraform_path])
+
+auto_approve = if options[:auto_approve] == 'true'
+  true
+else
+  false
+end
+
+Generate::Generator.run(
+  terraform_path,
+  tfvars: tfvars,
+  log_file: "#{APP_ROOT}/crash.log",
+  credentials: "#{APP_ROOT}/terraform_aws_permissions_generator_user_credentials",
+  config: "#{APP_ROOT}/terraform_aws_permissions_generator_config",
+  auto_approve: auto_approve,
+  policy_path: "#{APP_ROOT}/required_permissions.json",
+  policy_modifier_path: "#{APP_ROOT}/policy_modifier",
+  completed_policies_dir: "#{APP_ROOT}/completed_policies",
+)

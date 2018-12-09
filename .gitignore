@@ -1,0 +1,33 @@
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+# vendor directory
+/vendor/
+
+# terraform state S3
+bootstrap/terraform_state_s3.tf
+
+# generated credentials
+terraform_aws_permissions_generator_user_credentials
+
+# generated config
+terraform_aws_permissions_generator_config
+
+# generated required IAM permissions
+required_permissions.json
+
+# crash log
+crash.log
+
+# completed policies
+completed_policies/*
+
+# dont ignore placeholders
+!.placeholder

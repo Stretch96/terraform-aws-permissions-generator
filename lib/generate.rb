@@ -1,0 +1,7 @@
+require_relative "generate/helper"
+require_relative "generate/terraform"
+require_relative "generate/errors"
+require_relative "generate/logger"
+require_relative "generate/log_parser"
+require_relative "generate/policy_generator"
+require_relative "generate/generator"
